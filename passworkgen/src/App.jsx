@@ -1,34 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [length, setLength] = useState(8);
+  const [character, setChar] = useState(false);
+  const [number, setNumber] = useState(false);
+  const [password,setPossword]=useState("");
+
+  const Genratepwd=useCallback(()=>{
+    let pass="";
+    let str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    if(number){
+      str+="0123456789";
+    }
+    if(character){
+      str+="`~!@#$%^&*()_+=?/|}{][";
+    }
+    for(let i=1;i<=length;i++){
+      pass+=str.charAt(Math.floor(Math.random()*str.length+1));
+      
+    }
+    setPossword(pass);
+
+  },[length,character,number,setPossword]);
+  useEffect(()=>{
+    Genratepwd()
+  },[length,number,character,Genratepwd]);
+
+  const pwdref=useRef(null);
+  
+  const copytoclipboard=useCallback(()=>{
+    pwdref.current.select();
+    pwdref.current.setSelectionRange(0,8);
+    window.navigator.clipboard.writeText(password);
+
+
+
+
+  },[password]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <h1>Password Generator</h1>
+      <div className="App-header">
+        <input type="text" value={password} placeholder='Password'
+        ref={pwdref} />
+
+        <button onClick={copytoclipboard}>Copy</button>
+
+
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="dep">
+
+        <div className="dep1">
+          <input type="range" min={6} max={50} value={length} className='rangee' onChange={(e)=>setLength(e.target.value)} />
+          <label htmlFor="">Length:{length}</label>
+        </div>
+
+        <div className="dep2">
+          <input type="checkbox" defaultChecked={number} id='numberinput' 
+          onChange={()=>{setNumber((prev)=>!prev)}
+          }
+          />
+          <label htmlFor="numberinput"> Number</label>
+        </div>
+        <div className="dep3">
+          <input type="checkbox" defaultChecked={character} id='characterinput' 
+          onChange={()=>{ setChar((prev)=>!prev)}}/>
+          <label htmlFor="characterinput"> Character</label>
+        </div>
+
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+
+    </div>
+    
   )
 }
 
