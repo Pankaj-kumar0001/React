@@ -42,6 +42,7 @@ function App() {
                 onCurrencyChange={(currency) => setFrom(currency)}
                 selectCurrency={from}
                 onAmountChange={(amount) => setAmount(amount)}
+              
               />
             </div>
             <div className="swap-button-container">
@@ -61,6 +62,7 @@ function App() {
                 onCurrencyChange={(currency) => setTo(currency)}
                 selectCurrency={to}
                 amountDisable
+                currencyDisable={false}
               />
             </div>
             <button type="submit" className="convert-button">
