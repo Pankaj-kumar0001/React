@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { InputBox } from './components';
+import useCurrencyInfo from "./hooks/useCurrencyinfo.js";
+
+import './index.css'; // Make sure this CSS file exists
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [amount, setAmount] = useState(0);
+  const [from, setFrom] = useState("usd");
+  const [to, setTo] = useState("inr");
+  const [convertedAmount, setConvertedAmount] = useState(0);
+
+  const currencyInfo = useCurrencyInfo(from);
+  const options = Object.keys(currencyInfo);
+
+  const swap = () => {
+    setFrom(to);
+    setTo(from);
+    setConvertedAmount(amount);
+    setAmount(convertedAmount);
+  };
+
+  const convert = () => {
+    setConvertedAmount(amount * currencyInfo[to]);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app-container">
+      <div className="inner-container">
+        <div className="converter-box">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              convert();
+            }}
+          >
+            <div className="input-group">
+              <InputBox
+                label="From"
+                amount={amount}
+                currencyOptions={options}
+                onCurrencyChange={(currency) => setFrom(currency)}
+                selectCurrency={from}
+                onAmountChange={(amount) => setAmount(amount)}
+              />
+            </div>
+            <div className="swap-button-container">
+              <button
+                type="button"
+                className="swap-button"
+                onClick={swap}
+              >
+                swap
+              </button>
+            </div>
+            <div className="input-group">
+              <InputBox
+                label="To"
+                amount={convertedAmount}
+                currencyOptions={options}
+                onCurrencyChange={(currency) => setTo(currency)}
+                selectCurrency={to}
+                amountDisable
+              />
+            </div>
+            <button type="submit" className="convert-button">
+              Convert {from.toUpperCase()} to {to.toUpperCase()}
+            </button>
+          </form>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
