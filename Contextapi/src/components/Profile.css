@@ -1,0 +1,29 @@
+/* Profile.css */
+
+.profile-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f3f6f9;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-greeting {
+  font-size: 24px;
+  color: #333;
+}
+
+.profile-greeting span {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.profile-message {
+  text-align: center;
+  margin-top: 50px;
+  color: #555;
+  font-size: 18px;
+}
