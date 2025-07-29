@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Card from '../components/card'
 import './App.css'
+import Card2 from '../components/Card2';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Card name={name} changename={setName} />
 
       <p> Name:{name}</p>
+      <Card2 name={name}/>
     </>
   )
 }
